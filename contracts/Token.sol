@@ -9,7 +9,7 @@ contract Token {
 	uint256 public decimals = 18;
 	uint256 public totalSupply;
 
-    // Track Balalnces
+    // Track Balances
     mapping(address => uint256) public balanceOf;
     mapping(address => mapping(address => uint256 )) public allowance;
 
@@ -86,13 +86,12 @@ contract Token {
         returns (bool success) 
     {
         // check approval
-        require(_value <= balanceOf[_from]);
-        require(_value <=  allowance[_from][msg.sender]);
+        require(_value <= balanceOf[_from], 'insufficient balance');
+        require(_value <=  allowance[_from][msg.sender], 'insufficient allowance');
 
 
         // Reset Allowance  
         allowance[_from][msg.sender] = allowance[_from][msg.sender] - _value;
-
         // spend tokens 
         _transfer(_from, _to, _value);
         return true;
